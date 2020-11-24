@@ -1,6 +1,7 @@
 import random
 from ability import Ability
 from armor import Armor
+from weapon import Weapon
 
 class Hero:
 
@@ -27,11 +28,22 @@ class Hero:
         # always the same as their starting health (no damage taken yet!)
         self.current_health = starting_health
 
+        self.deaths = 0
+        self.kills = 0
+
     def add_ability(self, ability):
         ''' Add ability to abilities list '''
 
         # We use the append method to add ability objects to our list.
         self.abilities.append(ability)
+
+    def add_weapon(self, weapon):
+        '''Add weapon to self.abilities'''
+        # TODO: This method will append the weapon object passed in as an
+        # argument to self.abilities.
+        # This means that self.abilities will be a list of
+        # abilities and weapons.
+        self.abilities.append(weapon)
 
     def attack(self):
         '''Calculate the total damage from all ability attacks.
@@ -103,29 +115,35 @@ class Hero:
                 opponent.take_damage(self.attack())
                 if opponent.current_health <= 0:
                     print(str(self.name) + " has won!")
+                    self.add_kill
+                    opponent.add_death
                     break
                 else:
                     self.take_damage(opponent.attack())
                     if self.current_health <= 0:
                         print(str(opponent.name) + " has won!")
+                        opponent.add_kill
+                        self.add_death
                         break
                     else:
                         continue
         else:
             print("Draw!")
+    
+    def add_kill(self, num_kills):
+        ''' Update self.kills by num_kills amount'''
+        self.kills += num_kills
+
+    def add_death(self, num_deaths):
+        ''' Update deaths with num_deaths'''
+        # TODO: This method should add the number of deaths to self.deaths
+        self.deaths += num_deaths
 
 if __name__ == "__main__":
     # If you run this file from the terminal
     # this block is executed.
+    hero = Hero("Wonder Woman")
+    weapon = Weapon("Lasso of Truth", 90)
+    hero.add_weapon(weapon)
+    print(hero.attack())
 
-    hero1 = Hero("Wonder Woman")
-    hero2 = Hero("Dumbledore")
-    ability1 = Ability("Super Speed", 50)
-    ability2 = Ability("Super Eyes", 10)
-    ability3 = Ability("Wizard Wand", 50)
-    ability4 = Ability("Wizard Beard", 10)
-    hero1.add_ability(ability1)
-    hero1.add_ability(ability2)
-    hero2.add_ability(ability3)
-    hero2.add_ability(ability4)
-    hero1.fight(hero2)
